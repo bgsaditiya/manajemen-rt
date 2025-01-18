@@ -4,8 +4,28 @@ import Sidebar from "../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
 
-export default function Pembayaran({ title, pembayaran }) {
-    // console.log(pembayaran);
+import { Bar } from "react-chartjs-2";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+} from "chart.js";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+export default function Laporan({ title, reportSummary }) {
+    // console.log(Object.keys(reportSummary));
 
     const convertDateToMonthName = (dateString) => {
         const months = [
@@ -31,6 +51,54 @@ export default function Pembayaran({ title, pembayaran }) {
 
         // Mengembalikan nama bulan berdasarkan index
         return months[monthIndex];
+    };
+
+    const formattedData = Object.keys(reportSummary).map((key) => ({
+        bulan: convertDateToMonthName(key),
+        pemasukan: parseFloat(reportSummary[key].pemasukan),
+        pengeluaran: parseFloat(reportSummary[key].pengeluaran),
+        saldo_sisa: reportSummary[key].saldo_sisa,
+    }));
+
+    const chartData = {
+        labels: formattedData.map((item) => item.bulan), // Label bulan
+        datasets: [
+            {
+                label: "Pemasukan",
+                data: formattedData.map((item) => item.pemasukan),
+                backgroundColor: "rgba(75, 192, 192, 0.6)",
+                borderColor: "rgba(75, 192, 192, 1)",
+                borderWidth: 1,
+            },
+            {
+                label: "Pengeluaran",
+                data: formattedData.map((item) => item.pengeluaran),
+                backgroundColor: "rgba(255, 99, 132, 0.6)",
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 1,
+            },
+            {
+                label: "Sisa Saldo",
+                data: formattedData.map((item) => item.saldo_sisa),
+                backgroundColor: "rgba(53, 162, 235, 0.6)",
+                borderColor: "rgba(53, 162, 235, 1)",
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    // Konfigurasi opsi chart
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+            title: {
+                display: true,
+                text: "Report Summary (Per Bulan)",
+            },
+        },
     };
 
     return (
@@ -69,7 +137,7 @@ export default function Pembayaran({ title, pembayaran }) {
                         </div>
                     </form>
                     <a
-                        href="/pembayaran/tambah"
+                        href="/pengeluaran/tambah"
                         type="button"
                         className="ml-2 md:ml-0 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-gray-700 dark:border-gray-700"
                     >
@@ -80,80 +148,49 @@ export default function Pembayaran({ title, pembayaran }) {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                                Nama Pembayar
+                                Bulan
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                No. Rumah
+                                Tanggal Pemasukan
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Jenis Iuran
+                                Tanggal Pengeluaran
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Jumlah
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Periode
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Tanggal Dibayar
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Status
+                                Sisa Saldo
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {pembayaran && pembayaran.length > 0 ? (
-                            pembayaran.map((bayar) => (
+                        {Object.keys(reportSummary).map((key) => {
+                            const { pemasukan, pengeluaran, saldo_sisa } =
+                                reportSummary[key];
+                            return (
                                 <tr
-                                    key={bayar.id}
+                                    key={key}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                 >
-                                    <th
+                                    <td
                                         scope="row"
                                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {bayar.penghuni.nama_lengkap}
-                                    </th>
-                                    <td className="px-6 py-4">
-                                        {bayar.house.no_rumah}
+                                        {convertDateToMonthName(key)}
                                     </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.jenis_iuran}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.jumlah}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {convertDateToMonthName(
-                                            bayar.periode_start
-                                        )}{" "}
-                                        -{" "}
-                                        {convertDateToMonthName(
-                                            bayar.periode_end
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.tanggal_pembayaran}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.status}
-                                    </td>
+                                    <td className="px-6 py-4">{pemasukan}</td>
+                                    <td className="px-6 py-4">{pengeluaran}</td>
+                                    <td className="px-6 py-4">{saldo_sisa}</td>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <td
-                                    scope="row"
-                                    colSpan={7}
-                                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
-                                >
-                                    Belum ada pembayaran yang diterima.
-                                </td>
-                            </tr>
-                        )}
+                            );
+                        })}
                     </tbody>
                 </table>
+            </div>
+
+            <div>
+                <h2 className="text-center my-6 text-white">
+                    Grafik Report Summary
+                </h2>
+                <Bar data={chartData} options={options} />
             </div>
         </Sidebar>
     );

@@ -4,7 +4,7 @@ import Sidebar from "../../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
 
-export default function Edit({ title, data }) {
+export default function Lihat({ title, data }) {
     console.log(data);
     return (
         <Sidebar>

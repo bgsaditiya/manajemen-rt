@@ -15,10 +15,9 @@ return new class extends Migration
         //
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            // $table->enum('kategori', ['gaji', 'perbaikan', 'token', 'lainnya']);
             $table->string('deskripsi');
-            $table->decimal('jumlah', 10, 2);
-            $table->date('tanggal_pengeluaran')->default(DB::raw('CURRENT_DATE'));
+            $table->integer('jumlah');
+            $table->date('tanggal_pengeluaran');
             $table->timestamps();
         });
     }

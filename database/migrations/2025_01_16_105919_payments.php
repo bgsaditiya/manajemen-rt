@@ -24,11 +24,6 @@ return new class extends Migration
             $table->date('tanggal_pembayaran')->default(DB::raw('CURRENT_DATE'));
             $table->enum('status', ['lunas', 'belum lunas'])->default('lunas');
             $table->timestamps();
-
-            // $table->foreign('penghuni_id')->references('id')->on('users')->onDelete('cascade');
-
-
-            // $table->foreign('rumah_id')->references('id')->on('houses')->onDelete('cascade');
         });
     }
 

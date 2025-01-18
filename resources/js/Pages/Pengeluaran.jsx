@@ -4,7 +4,7 @@ import Sidebar from "../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
 
-export default function Pembayaran({ title, pembayaran }) {
+export default function Pengeluaran({ title, pengeluaran }) {
     // console.log(pembayaran);
 
     const convertDateToMonthName = (dateString) => {
@@ -69,7 +69,7 @@ export default function Pembayaran({ title, pembayaran }) {
                         </div>
                     </form>
                     <a
-                        href="/pembayaran/tambah"
+                        href="/pengeluaran/tambah"
                         type="button"
                         className="ml-2 md:ml-0 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-gray-700 dark:border-gray-700"
                     >
@@ -80,64 +80,34 @@ export default function Pembayaran({ title, pembayaran }) {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">
-                                Nama Pembayar
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                No. Rumah
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Jenis Iuran
+                                Deskripsi
                             </th>
                             <th scope="col" className="px-6 py-3">
                                 Jumlah
                             </th>
                             <th scope="col" className="px-6 py-3">
-                                Periode
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Tanggal Dibayar
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Status
+                                Tanggal Pengeluaran
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {pembayaran && pembayaran.length > 0 ? (
-                            pembayaran.map((bayar) => (
+                        {pengeluaran && pengeluaran.length > 0 ? (
+                            pengeluaran.map((biaya) => (
                                 <tr
-                                    key={bayar.id}
+                                    key={biaya.id}
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                 >
                                     <th
                                         scope="row"
                                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                     >
-                                        {bayar.penghuni.nama_lengkap}
+                                        {biaya.deskripsi}
                                     </th>
                                     <td className="px-6 py-4">
-                                        {bayar.house.no_rumah}
+                                        {biaya.jumlah}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {bayar.jenis_iuran}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.jumlah}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {convertDateToMonthName(
-                                            bayar.periode_start
-                                        )}{" "}
-                                        -{" "}
-                                        {convertDateToMonthName(
-                                            bayar.periode_end
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.tanggal_pembayaran}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {bayar.status}
+                                        {biaya.tanggal_pengeluaran}
                                     </td>
                                 </tr>
                             ))
@@ -145,10 +115,10 @@ export default function Pembayaran({ title, pembayaran }) {
                             <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <td
                                     scope="row"
-                                    colSpan={7}
+                                    colSpan={3}
                                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center"
                                 >
-                                    Belum ada pembayaran yang diterima.
+                                    Belum ada data pengluaran.
                                 </td>
                             </tr>
                         )}

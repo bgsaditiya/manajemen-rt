@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Houses;
+use App\Models\Payment;
 use App\Models\User;
 use Inertia\Inertia;
 
@@ -15,6 +16,21 @@ class RumahController extends Controller
         // dd($hs->first()->penghuni);
         return Inertia::render('Rumah', [
             'title' => 'Data Rumah',
+        ]);
+    }
+
+    public function show($id){
+        $penghuniSekarang = User::where('rumah_id', $id)->whereNull('selesai_huni')->get();
+        $penghuniSebelum = User::where('rumah_id', $id)->whereNotNull('selesai_huni')->get();
+
+        $pembayaran = Payment::where('rumah_id', $id)->with(['penghuni', 'house'])->get();
+        // dd($penghuniAktif);
+
+        return Inertia::render('Rumah/Lihat', [
+            'title' => 'Lihat Detail Rumah',
+            'penghuniSekarang' => $penghuniSekarang,
+            'penghuniSebelum' => $penghuniSebelum,
+            'pembayaran' => $pembayaran,
         ]);
     }
 
@@ -103,8 +119,30 @@ class RumahController extends Controller
             return response()->json(['message' => 'Gagal menambah data penghuni rumah.']);
         }
 
-        // Houses::create($validated);
+    }
 
+    public function edit($id){
+        $houses = Houses::find($id);
 
+        return Inertia::render('Rumah/Edit', [
+            'title' => 'Edit Data Penghuni',
+            'rumahDefault' => $houses,
+        ]);
+    }
+
+    public function update(Request $request, $id){
+
+        $validated = $request->validate([
+            'no_rumah' => 'required|string|max:255',
+            'status_huni' => 'required|in:dihuni,tidak dihuni',
+        ]);
+
+        $rumahUpdate = Houses::findOrFail($id);
+
+        $rumahUpdate->update($validated);
+
+        // dd($penghuni);
+
+        return to_route('rumah.index');
     }
 }

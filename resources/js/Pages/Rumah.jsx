@@ -11,6 +11,8 @@ export default function Rumah({ title }) {
         status_huni: "",
     });
 
+    const [currentHouse, setCurrentHouse] = useState("");
+
     //Fungsi menghapus data rumah
     const { delete: destroy } = useForm();
 
@@ -28,7 +30,7 @@ export default function Rumah({ title }) {
 
     const toggleModal = () => {
         setIsModalVisible(!isModalVisible);
-        console.log(aksi);
+        // console.log(aksi);
     };
 
     const handleOutsideClick = (e) => {
@@ -363,7 +365,7 @@ export default function Rumah({ title }) {
                                     </td>
                                     <td className="px-6 py-4">
                                         <a
-                                            href="#"
+                                            href={"/rumah/lihat/" + house.id}
                                             className="font-medium text-blue-600 dark:text-green-400 hover:underline mr-2"
                                         >
                                             Lihat
@@ -376,6 +378,7 @@ export default function Rumah({ title }) {
                                                     "rumah_id",
                                                     house.id
                                                 );
+                                                setCurrentHouse(house.no_rumah);
                                             }}
                                             className="font-medium text-blue-600 dark:text-purple-500 hover:underline mr-2"
                                         >
@@ -397,7 +400,7 @@ export default function Rumah({ title }) {
                                                                 Rumah{" "}
                                                                 <span className="px-2 py-1 rounded-md bg-gray-800">
                                                                     {
-                                                                        house.no_rumah
+                                                                        currentHouse
                                                                     }
                                                                 </span>
                                                             </h3>
@@ -427,10 +430,9 @@ export default function Rumah({ title }) {
                                                             </button>
                                                         </div>
                                                         <form
-                                                            onSubmit={(e) => {
-                                                                e.preventDefault();
-                                                                handleTambahPenghuni();
-                                                            }}
+                                                            onSubmit={
+                                                                handleTambahPenghuni
+                                                            }
                                                             className="p-4 md:p-5"
                                                         >
                                                             <div className="mb-6">
@@ -635,7 +637,7 @@ export default function Rumah({ title }) {
                                                 </div>
                                             )}
                                         <a
-                                            href="#"
+                                            href={"/rumah/edit/" + house.id}
                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2"
                                         >
                                             Edit

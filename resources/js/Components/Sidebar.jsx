@@ -34,7 +34,7 @@ export default function Sidebar({ children }) {
             >
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <a
-                        href="https://flowbite.com/"
+                        href="/"
                         className="flex items-center ps-2.5 mb-5 mt-3 space-x-2"
                     >
                         <svg
@@ -59,19 +59,33 @@ export default function Sidebar({ children }) {
                     <ul className="space-y-4 font-medium">
                         <li>
                             <a
-                                href="/"
+                                href="/rumah"
                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
-                                <svg
+                                {/* <svg
                                     className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                     aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="currentColor"
-                                    viewBox="0 0 18 18"
+                                    viewBox="0 0 20 20"
                                 >
-                                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                                    <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
+                                </svg> */}
+                                <svg
+                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path d="M6.29367 4.96556C8.96048 3.028 10.2939 2.05923 11.8167 2.00336C11.9389 1.99888 12.0611 1.99888 12.1833 2.00336C13.7061 2.05923 15.0395 3.028 17.7063 4.96556C20.3732 6.90311 21.7066 7.87189 22.2303 9.30291C22.2723 9.41771 22.3101 9.534 22.3436 9.65157C22.761 11.1171 22.2517 12.6846 21.2331 15.8197L19.512 21.1164C19.2386 21.958 18.4543 22.5279 17.5694 22.5279C16.4412 22.5279 15.5267 21.6133 15.5267 20.4852V17.7363C15.5267 16.6778 14.6686 15.8197 13.6101 15.8197H10.3899C9.3314 15.8197 8.47329 16.6778 8.47329 17.7363V20.4852C8.47329 21.6133 7.55877 22.5279 6.43065 22.5279C5.54572 22.5279 4.76144 21.958 4.48798 21.1164L2.76696 15.8197C1.74832 12.6846 1.23901 11.1171 1.65645 9.65157C1.68994 9.534 1.72773 9.41771 1.76974 9.30291C2.29344 7.87189 3.62685 6.90311 6.29367 4.96556Z" />
                                 </svg>
-                                <span className="ms-3">Dashboard</span>
+
+                                <span className="flex-1 ms-3 whitespace-nowrap">
+                                    Rumah
+                                </span>
+                                {/* <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
+                                    3
+                                </span> */}
                             </a>
                         </li>
                         <li>
@@ -110,37 +124,6 @@ export default function Sidebar({ children }) {
                         </li>
                         <li>
                             <a
-                                href="/rumah"
-                                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                            >
-                                {/* <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
-                                </svg> */}
-                                <svg
-                                    className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M6.29367 4.96556C8.96048 3.028 10.2939 2.05923 11.8167 2.00336C11.9389 1.99888 12.0611 1.99888 12.1833 2.00336C13.7061 2.05923 15.0395 3.028 17.7063 4.96556C20.3732 6.90311 21.7066 7.87189 22.2303 9.30291C22.2723 9.41771 22.3101 9.534 22.3436 9.65157C22.761 11.1171 22.2517 12.6846 21.2331 15.8197L19.512 21.1164C19.2386 21.958 18.4543 22.5279 17.5694 22.5279C16.4412 22.5279 15.5267 21.6133 15.5267 20.4852V17.7363C15.5267 16.6778 14.6686 15.8197 13.6101 15.8197H10.3899C9.3314 15.8197 8.47329 16.6778 8.47329 17.7363V20.4852C8.47329 21.6133 7.55877 22.5279 6.43065 22.5279C5.54572 22.5279 4.76144 21.958 4.48798 21.1164L2.76696 15.8197C1.74832 12.6846 1.23901 11.1171 1.65645 9.65157C1.68994 9.534 1.72773 9.41771 1.76974 9.30291C2.29344 7.87189 3.62685 6.90311 6.29367 4.96556Z" />
-                                </svg>
-
-                                <span className="flex-1 ms-3 whitespace-nowrap">
-                                    Rumah
-                                </span>
-                                {/* <span className="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">
-                                    3
-                                </span> */}
-                            </a>
-                        </li>
-                        <li>
-                            <a
                                 href="/pembayaran"
                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
@@ -166,7 +149,7 @@ export default function Sidebar({ children }) {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href="/pengeluaran"
                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
                                 <svg
@@ -185,7 +168,7 @@ export default function Sidebar({ children }) {
                         </li>
                         <li>
                             <a
-                                href="#"
+                                href="/laporan"
                                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
                             >
                                 <svg

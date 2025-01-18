@@ -4,7 +4,7 @@ import Sidebar from "../../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
 
-export default function Dashboard({ title, houses }) {
+export default function Tambah({ title, houses }) {
     const { data: penghuni, setData: setPenghuni } = useForm({
         nama_lengkap: "",
         foto_ktp: null,
