@@ -11,6 +11,8 @@ class RumahController extends Controller
 {
     //
     public function index(){
+        // $hs = Houses::with('penghuni')->orderBy('no_rumah')->get();
+        // dd($hs->first()->penghuni);
         return Inertia::render('Rumah', [
             'title' => 'Data Rumah',
         ]);
@@ -34,7 +36,8 @@ class RumahController extends Controller
     public function apiHouses(){
         try {
             // Ambil semua data mobil dari database
-            $houses = Houses::orderBy('no_rumah')->get();
+            $houses = Houses::with('penghuni')->orderBy('no_rumah')->get();
+            // $houses = Houses::orderBy('no_rumah')->with('user')->get();
 
             // Kembalikan data dalam format JSON
             return response()->json([
@@ -72,6 +75,7 @@ class RumahController extends Controller
             'no_telp' => 'required|string|max:255',
             'status_pernikahan' => 'required|in:sudah menikah,belum menikah',
             'rumah_id' => 'required',
+            'mulai_huni' => 'required|date',
         ]);
 
 
@@ -84,16 +88,16 @@ class RumahController extends Controller
             $fileName = 'nophoto.jpg';
         }
 
-        $hs = User::create([
-            'nama_lengkap'=>$validated['nama_lengkap'],
-            'foto_ktp'=>$fileName,
-            'status_penghuni'=>$validated['status_penghuni'],
-            'no_telp'=>$validated['no_telp'],
-            'status_pernikahan'=>$validated['status_pernikahan'],
-            'rumah_id'=>$validated['rumah_id'],
-        ]);
+        $penghuni = User::create($validated);
 
-        if ($hs){
+        //update houses
+        $houses = Houses::find($validated['rumah_id']);
+        if($houses->status_huni !== 'dihuni'){
+            $houses->status_huni = 'dihuni';
+            $houses->save();
+        }
+
+        if ($penghuni){
             return response()->json(['message' => 'Berhasil menambah data penghuni rumah.']);
         }else{
             return response()->json(['message' => 'Gagal menambah data penghuni rumah.']);

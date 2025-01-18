@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('penghuni', function (Blueprint $table) {
             $table->id();
             $table->string('nama_lengkap');
             $table->text('foto_ktp')->nullable();
@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('no_telp');
             $table->enum('status_pernikahan', ['sudah menikah','belum menikah'])->nullable();
             $table->foreignId('rumah_id')->constrained('houses')->onDelete('cascade');
+            $table->date('mulai_huni');
+            $table->date('selesai_huni')->nullable();
             $table->timestamps();
         });
 
@@ -43,7 +45,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('penghuni');
         // Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }

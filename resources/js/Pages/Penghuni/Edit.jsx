@@ -4,22 +4,27 @@ import Sidebar from "../../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
 
-export default function Dashboard({ title, houses }) {
-    const { data: penghuni, setData: setPenghuni } = useForm({
-        nama_lengkap: "",
+export default function Edit({ title, houses, penghuniDefault }) {
+    const { data, setData, errors } = useForm({
+        nama_lengkap: penghuniDefault.nama_lengkap,
         foto_ktp: null,
-        status_penghuni: "",
-        no_telp: "",
-        status_pernikahan: "",
-        rumah_id: "",
-        mulai_huni: "",
-        selesai_huni: null,
+        status_penghuni: penghuniDefault.status_penghuni,
+        no_telp: penghuniDefault.no_telp,
+        status_pernikahan: penghuniDefault.status_pernikahan,
+        rumah_id: penghuniDefault.rumah_id,
+        mulai_huni: penghuniDefault.mulai_huni,
+        selesai_huni: penghuniDefault.selesai_huni,
     });
-    console.log(penghuni);
+    // console.log(data);
 
-    function handleTambahPenghuni(e) {
+    function handleEditPenghuni(e, penghuniId) {
         e.preventDefault();
-        router.post("/penghuni/tambah", penghuni);
+        router.put(`/penghuni/edit/${penghuniId}`, data, {
+            onError: (errors) => {
+                // Errors dari server dapat disimpan dan digunakan di form
+                console.log(errors); // Menampilkan error di console untuk debugging
+            },
+        });
     }
 
     return (
@@ -39,7 +44,7 @@ export default function Dashboard({ title, houses }) {
                 </div>
                 <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
                 <form
-                    onSubmit={handleTambahPenghuni}
+                    onSubmit={(e) => handleEditPenghuni(e, penghuniDefault.id)}
                     className="p-5 dark:bg-gray-800"
                 >
                     <div className="mb-6">
@@ -48,13 +53,18 @@ export default function Dashboard({ title, houses }) {
                         </label>
                         <input
                             type="text"
-                            value={penghuni.nama_lengkap}
+                            value={data.nama_lengkap}
                             onChange={(e) =>
-                                setPenghuni("nama_lengkap", e.target.value)
+                                setData("nama_lengkap", e.target.value)
                             }
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required
                         />
+                        {errors.nama_lengkap && (
+                            <p className="text-red-500 my-2">
+                                {errors.nama_lengkap}
+                            </p>
+                        )}
                     </div>
                     <div className="mb-6">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -63,10 +73,15 @@ export default function Dashboard({ title, houses }) {
                         <input
                             className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                             onChange={(e) =>
-                                setPenghuni("foto_ktp", e.target.files[0])
+                                setData("foto_ktp", e.target.files[0])
                             }
                             type="file"
                         />
+                        {errors.foto_ktp && (
+                            <p className="text-red-500 my-2">
+                                {errors.foto_ktp}
+                            </p>
+                        )}
                     </div>
                     <div className="mb-6">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -74,13 +89,16 @@ export default function Dashboard({ title, houses }) {
                         </label>
                         <input
                             type="text"
-                            value={penghuni.no_telp}
-                            onChange={(e) =>
-                                setPenghuni("no_telp", e.target.value)
-                            }
+                            value={data.no_telp}
+                            onChange={(e) => setData("no_telp", e.target.value)}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             required
                         />
+                        {errors.no_telp && (
+                            <p className="text-red-500 my-2">
+                                {errors.no_telp}
+                            </p>
+                        )}
                     </div>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
                         <div>
@@ -89,11 +107,9 @@ export default function Dashboard({ title, houses }) {
                             </label>
                             <select
                                 onChange={(e) =>
-                                    setPenghuni(
-                                        "status_penghuni",
-                                        e.target.value
-                                    )
+                                    setData("status_penghuni", e.target.value)
                                 }
+                                value={data.status_penghuni}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                                 <option>Pilih status penghuni</option>
@@ -102,6 +118,11 @@ export default function Dashboard({ title, houses }) {
                                     Penghuni Kontrak
                                 </option>
                             </select>
+                            {errors.status_penghuni && (
+                                <p className="text-red-500 my-2">
+                                    {errors.status_penghuni}
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -109,11 +130,9 @@ export default function Dashboard({ title, houses }) {
                             </label>
                             <select
                                 onChange={(e) =>
-                                    setPenghuni(
-                                        "status_pernikahan",
-                                        e.target.value
-                                    )
+                                    setData("status_pernikahan", e.target.value)
                                 }
+                                value={data.status_pernikahan}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                                 <option>Pilih status pernikahan</option>
@@ -124,6 +143,11 @@ export default function Dashboard({ title, houses }) {
                                     Belum Menikah
                                 </option>
                             </select>
+                            {errors.status_pernikahan && (
+                                <p className="text-red-500 my-2">
+                                    {errors.status_pernikahan}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className="grid gap-6 mb-6">
@@ -133,8 +157,9 @@ export default function Dashboard({ title, houses }) {
                             </label>
                             <select
                                 onChange={(e) =>
-                                    setPenghuni("rumah_id", e.target.value)
+                                    setData("rumah_id", e.target.value)
                                 }
+                                value={data.rumah_id}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             >
                                 <option>....</option>
@@ -144,6 +169,11 @@ export default function Dashboard({ title, houses }) {
                                     </option>
                                 ))}
                             </select>
+                            {errors.rumah_id && (
+                                <p className="text-red-500 my-2">
+                                    {errors.rumah_id}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -152,33 +182,45 @@ export default function Dashboard({ title, houses }) {
                                 Mulai Huni
                             </label>
                             <input
-                                value={penghuni.mulai_huni}
+                                // value={penghuniLama.mulai_huni}
                                 onChange={(e) =>
-                                    setPenghuni("mulai_huni", e.target.value)
+                                    setData("mulai_huni", e.target.value)
                                 }
+                                value={data.mulai_huni}
                                 type="date"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {errors.mulai_huni && (
+                                <p className="text-red-500 my-2">
+                                    {errors.mulai_huni}
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Selesai Huni
                             </label>
                             <input
-                                value={penghuni.selesai_huni}
+                                // value={penghuniLama.selesai_huni}
                                 onChange={(e) =>
-                                    setPenghuni("selesai_huni", e.target.value)
+                                    setData("selesai_huni", e.target.value)
                                 }
+                                value={data.selesai_huni || ""}
                                 type="date"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             />
+                            {errors.selesai_huni && (
+                                <p className="text-red-500 my-2">
+                                    {errors.selesai_huni}
+                                </p>
+                            )}
                         </div>
                     </div>
                     <button
                         type="submit"
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                     >
-                        Tambah
+                        Edit
                     </button>
                 </form>
             </div>

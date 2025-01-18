@@ -17,7 +17,7 @@ class User extends Model
      *
      * @var list<string>
      */
-    protected $table = 'users';
+    protected $table = 'penghuni';
     public $timestamps = true;
 
     protected $fillable = [
@@ -27,10 +27,12 @@ class User extends Model
         'no_telp',
         'status_pernikahan',
         'rumah_id',
+        'mulai_huni',
+        'selesai_huni',
     ];
 
     public function house(): BelongsTo
     {
-        return $this->belongsTo(Houses::class);
+        return $this->belongsTo(Houses::class, 'rumah_id');
     }
 }

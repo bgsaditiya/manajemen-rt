@@ -4,28 +4,12 @@ import Sidebar from "../../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
 import { usePage, useForm, router } from "@inertiajs/react";
 
-export default function Dashboard({ title, houses }) {
-    const { data: penghuni, setData: setPenghuni } = useForm({
-        nama_lengkap: "",
-        foto_ktp: null,
-        status_penghuni: "",
-        no_telp: "",
-        status_pernikahan: "",
-        rumah_id: "",
-        mulai_huni: "",
-        selesai_huni: null,
-    });
-    console.log(penghuni);
-
-    function handleTambahPenghuni(e) {
-        e.preventDefault();
-        router.post("/penghuni/tambah", penghuni);
-    }
-
+export default function Edit({ title, data }) {
+    console.log(data);
     return (
         <Sidebar>
             <h2 className="pb-4 text-4xl font-extrabold dark:text-white">
-                {title}
+                {title + " " + data.nama_lengkap}
             </h2>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                 <div className="p-5 dark:text-white dark:bg-gray-800 items-center">
@@ -38,34 +22,25 @@ export default function Dashboard({ title, houses }) {
                     </a>
                 </div>
                 <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
-                <form
-                    onSubmit={handleTambahPenghuni}
-                    className="p-5 dark:bg-gray-800"
-                >
+
+                <div className="p-5 dark:bg-gray-800">
+                    <img
+                        class="h-auto max-w-lg rounded-lg bg-gray-700 mx-auto"
+                        src={"/images/" + data.foto_ktp}
+                        alt={"Foto KTP " + data.nama_lengkap}
+                    />
+                </div>
+                <div className="p-5 dark:bg-gray-800">
                     <div className="mb-6">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Nama Lengkap
                         </label>
                         <input
                             type="text"
-                            value={penghuni.nama_lengkap}
-                            onChange={(e) =>
-                                setPenghuni("nama_lengkap", e.target.value)
-                            }
+                            value={data.nama_lengkap}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required
-                        />
-                    </div>
-                    <div className="mb-6">
-                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Upload Foto KTP
-                        </label>
-                        <input
-                            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-                            onChange={(e) =>
-                                setPenghuni("foto_ktp", e.target.files[0])
-                            }
-                            type="file"
+                            disabled
+                            readOnly
                         />
                     </div>
                     <div className="mb-6">
@@ -74,12 +49,10 @@ export default function Dashboard({ title, houses }) {
                         </label>
                         <input
                             type="text"
-                            value={penghuni.no_telp}
-                            onChange={(e) =>
-                                setPenghuni("no_telp", e.target.value)
-                            }
+                            value={data.no_telp}
                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            required
+                            disabled
+                            readOnly
                         />
                     </div>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -88,15 +61,12 @@ export default function Dashboard({ title, houses }) {
                                 Status Penghuni
                             </label>
                             <select
-                                onChange={(e) =>
-                                    setPenghuni(
-                                        "status_penghuni",
-                                        e.target.value
-                                    )
-                                }
+                                value={data.status_penghuni || "default"}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                disabled
+                                readOnly
                             >
-                                <option>Pilih status penghuni</option>
+                                <option value="default">-</option>
                                 <option value="tetap">Penghuni Tetap</option>
                                 <option value="kontrak">
                                     Penghuni Kontrak
@@ -108,13 +78,10 @@ export default function Dashboard({ title, houses }) {
                                 Status Pernikahan
                             </label>
                             <select
-                                onChange={(e) =>
-                                    setPenghuni(
-                                        "status_pernikahan",
-                                        e.target.value
-                                    )
-                                }
+                                value={data.status_pernikahan}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                disabled
+                                readOnly
                             >
                                 <option>Pilih status pernikahan</option>
                                 <option value="sudah menikah">
@@ -131,19 +98,12 @@ export default function Dashboard({ title, houses }) {
                             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Rumah
                             </label>
-                            <select
-                                onChange={(e) =>
-                                    setPenghuni("rumah_id", e.target.value)
-                                }
+                            <input
+                                value={data.house.no_rumah}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                            >
-                                <option>....</option>
-                                {houses.map((house) => (
-                                    <option key={house.id} value={house.id}>
-                                        {house.no_rumah}
-                                    </option>
-                                ))}
-                            </select>
+                                readOnly
+                                disabled
+                            />
                         </div>
                     </div>
                     <div className="grid gap-6 mb-6 md:grid-cols-2">
@@ -152,12 +112,11 @@ export default function Dashboard({ title, houses }) {
                                 Mulai Huni
                             </label>
                             <input
-                                value={penghuni.mulai_huni}
-                                onChange={(e) =>
-                                    setPenghuni("mulai_huni", e.target.value)
-                                }
+                                value={data.mulai_huni}
                                 type="date"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                disabled
+                                readOnly
                             />
                         </div>
                         <div>
@@ -165,22 +124,15 @@ export default function Dashboard({ title, houses }) {
                                 Selesai Huni
                             </label>
                             <input
-                                value={penghuni.selesai_huni}
-                                onChange={(e) =>
-                                    setPenghuni("selesai_huni", e.target.value)
-                                }
+                                value={data.selesai_huni || ""}
                                 type="date"
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                disabled
+                                readOnly
                             />
                         </div>
                     </div>
-                    <button
-                        type="submit"
-                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                        Tambah
-                    </button>
-                </form>
+                </div>
             </div>
         </Sidebar>
     );

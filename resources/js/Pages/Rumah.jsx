@@ -11,17 +11,6 @@ export default function Rumah({ title }) {
         status_huni: "",
     });
 
-    const { data: penghuni, setData: setPenghuni } = useForm({
-        nama_lengkap: "",
-        foto_ktp: null,
-        status_penghuni: "",
-        no_telp: "",
-        status_pernikahan: "",
-        rumah_id: "",
-    });
-
-    // console.log(penghuni);
-
     //Fungsi menghapus data rumah
     const { delete: destroy } = useForm();
 
@@ -61,9 +50,10 @@ export default function Rumah({ title }) {
             const dt = response.data;
             setRumah(dt.data);
         } catch (error) {
-            console.error("Gagal memuat data mobil:", error);
+            console.error("Gagal memuat data rumah:", error);
         }
     };
+
     // const [status, setStatus] = useState("");
 
     const handleTambah = async () => {
@@ -81,6 +71,19 @@ export default function Rumah({ title }) {
     //     e.preventDefault();
     //     router.post("/houses/penghuni", penghuni);
     // }
+
+    const { data: penghuni, setData: setPenghuni } = useForm({
+        nama_lengkap: "",
+        foto_ktp: null,
+        status_penghuni: "",
+        no_telp: "",
+        status_pernikahan: "",
+        rumah_id: "",
+        mulai_huni: "",
+        selesai_huni: null,
+    });
+
+    // console.log(penghuni);
 
     const handleTambahPenghuni = async () => {
         try {
@@ -369,6 +372,10 @@ export default function Rumah({ title }) {
                                             onClick={() => {
                                                 setAksi("tambah");
                                                 toggleModal();
+                                                setPenghuni(
+                                                    "rumah_id",
+                                                    house.id
+                                                );
                                             }}
                                             className="font-medium text-blue-600 dark:text-purple-500 hover:underline mr-2"
                                         >
@@ -398,41 +405,38 @@ export default function Rumah({ title }) {
                                                                 onClick={
                                                                     toggleModal
                                                                 }
-                                                                class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                                className="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                                             >
                                                                 <svg
-                                                                    class="w-3 h-3"
+                                                                    className="w-3 h-3"
                                                                     xmlns="http://www.w3.org/2000/svg"
                                                                     fill="none"
                                                                     viewBox="0 0 14 14"
                                                                 >
                                                                     <path
                                                                         stroke="currentColor"
-                                                                        stroke-linecap="round"
-                                                                        stroke-linejoin="round"
-                                                                        stroke-width="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                        strokeWidth="2"
                                                                         d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                                                                     />
                                                                 </svg>
-                                                                <span class="sr-only">
+                                                                <span className="sr-only">
                                                                     Close modal
                                                                 </span>
                                                             </button>
                                                         </div>
                                                         <form
-                                                            onSubmit={() => {
-                                                                setPenghuni(
-                                                                    "rumah_id",
-                                                                    house.id
-                                                                );
+                                                            onSubmit={(e) => {
+                                                                e.preventDefault();
                                                                 handleTambahPenghuni();
                                                             }}
                                                             className="p-4 md:p-5"
                                                         >
                                                             <div className="mb-6">
                                                                 <label
-                                                                    for="first_name"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                    htmlFor="first_name"
+                                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                                                 >
                                                                     Nama Lengkap
                                                                 </label>
@@ -451,14 +455,14 @@ export default function Rumah({ title }) {
                                                                         )
                                                                     }
                                                                     type="text"
-                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                                                     required
                                                                 />
                                                             </div>
                                                             <div className="mb-6">
                                                                 <label
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                                                    for="file_input"
+                                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                    htmlFor="file_input"
                                                                 >
                                                                     Upload Foto
                                                                     KTP
@@ -474,14 +478,14 @@ export default function Rumah({ title }) {
                                                                                 .files[0]
                                                                         )
                                                                     }
-                                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                                                                     type="file"
                                                                 />
                                                             </div>
                                                             <div className="mb-6">
                                                                 <label
-                                                                    for="first_name"
-                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                    htmlFor="first_name"
+                                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                                                 >
                                                                     No. Telepon
                                                                 </label>
@@ -500,13 +504,13 @@ export default function Rumah({ title }) {
                                                                         )
                                                                     }
                                                                     type="text"
-                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-primary-500"
+                                                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-primary-500"
                                                                     required
                                                                 />
                                                             </div>
-                                                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                                            <div className="grid gap-6 mb-6 md:grid-cols-2">
                                                                 <div>
-                                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                                         Status
                                                                         Penghuni
                                                                     </label>
@@ -521,7 +525,7 @@ export default function Rumah({ title }) {
                                                                                     .value
                                                                             )
                                                                         }
-                                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                                     >
                                                                         <option>
                                                                             Pilih
@@ -539,7 +543,7 @@ export default function Rumah({ title }) {
                                                                     </select>
                                                                 </div>
                                                                 <div>
-                                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                                                         Status
                                                                         Pernikahan
                                                                     </label>
@@ -554,7 +558,7 @@ export default function Rumah({ title }) {
                                                                                     .value
                                                                             )
                                                                         }
-                                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                                     >
                                                                         <option>
                                                                             Pilih
@@ -572,9 +576,57 @@ export default function Rumah({ title }) {
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            <div className="grid gap-6 mb-6 md:grid-cols-2">
+                                                                <div>
+                                                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                        Mulai
+                                                                        Penghuni
+                                                                    </label>
+                                                                    <input
+                                                                        value={
+                                                                            penghuni.mulai_huni
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            setPenghuni(
+                                                                                "mulai_huni",
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                        type="date"
+                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                        Selesai
+                                                                        Huni
+                                                                    </label>
+                                                                    <input
+                                                                        value={
+                                                                            penghuni.selesai_huni
+                                                                        }
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            setPenghuni(
+                                                                                "selesai_huni",
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                        type="date"
+                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    />
+                                                                </div>
+                                                            </div>
                                                             <button
                                                                 type="submit"
-                                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                                             >
                                                                 Tambah
                                                             </button>
@@ -610,28 +662,28 @@ export default function Rumah({ title }) {
                                                 >
                                                     <button
                                                         onClick={toggleModal}
-                                                        class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                                        className="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                                     >
                                                         <svg
-                                                            class="w-3 h-3"
+                                                            className="w-3 h-3"
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
                                                             viewBox="0 0 14 14"
                                                         >
                                                             <path
                                                                 stroke="currentColor"
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
-                                                                stroke-width="2"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth="2"
                                                                 d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                                                             />
                                                         </svg>
-                                                        <span class="sr-only">
+                                                        <span className="sr-only">
                                                             Close modal
                                                         </span>
                                                     </button>
                                                     <svg
-                                                        class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+                                                        className="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
                                                         aria-hidden="true"
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
@@ -639,9 +691,9 @@ export default function Rumah({ title }) {
                                                     >
                                                         <path
                                                             stroke="currentColor"
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="2"
                                                             d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                                                         />
                                                     </svg>
@@ -657,7 +709,7 @@ export default function Rumah({ title }) {
                                                                     house.id
                                                                 )
                                                             }
-                                                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+                                                            className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
                                                         >
                                                             Hapus
                                                         </button>
@@ -665,7 +717,7 @@ export default function Rumah({ title }) {
                                                             onClick={
                                                                 toggleModal
                                                             }
-                                                            class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                            className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                                         >
                                                             Batal
                                                         </button>

@@ -15,7 +15,7 @@ return new class extends Migration
         //
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('penghuni_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('penghuni_id')->constrained('penghuni')->onDelete('cascade');
             $table->foreignId('rumah_id')->constrained('houses')->onDelete('cascade');
             $table->enum('jenis_iuran', ['kebersihan', 'satpam']);
             $table->decimal('jumlah', 10, 2);

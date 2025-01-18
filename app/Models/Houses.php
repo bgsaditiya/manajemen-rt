@@ -23,6 +23,11 @@ class Houses extends Model
 
     public function penghuni(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'rumah_id');
+    }
+
+    public function payment(): HasMany
+    {
+        return $this->hasMany(Payment::class, 'rumah_id');
     }
 }
