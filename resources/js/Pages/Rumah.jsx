@@ -2,14 +2,25 @@ import React from "react";
 // import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
 import { useState, useEffect, useRef } from "react";
-import { usePage, useForm } from "@inertiajs/react";
+import { usePage, useForm, router } from "@inertiajs/react";
 import axios from "axios";
 
 export default function Rumah({ title }) {
-    const { data, setData, post, errors, processing } = useForm({
+    const { data, setData } = useForm({
         no_rumah: "",
         status_huni: "",
     });
+
+    const { data: penghuni, setData: setPenghuni } = useForm({
+        nama_lengkap: "",
+        foto_ktp: null,
+        status_penghuni: "",
+        no_telp: "",
+        status_pernikahan: "",
+        rumah_id: "",
+    });
+
+    // console.log(penghuni);
 
     //Fungsi menghapus data rumah
     const { delete: destroy } = useForm();
@@ -53,18 +64,30 @@ export default function Rumah({ title }) {
             console.error("Gagal memuat data mobil:", error);
         }
     };
-    const [status, setStatus] = useState("");
+    // const [status, setStatus] = useState("");
 
     const handleTambah = async () => {
         try {
-            // Kirim request ke backend untuk memperbarui status tersedia
-            const res = await axios.post("/api/houses", data);
-            setStatus(res.data.message);
+            await axios.post("/api/houses", data);
+            // setStatus(res.data.message);
 
-            // Refresh data mobil setelah update berhasil
             fetchHouses();
         } catch (error) {
             console.error("Gagal menambah rumah:", error);
+        }
+    };
+
+    // function handleTambahPenghuni(e) {
+    //     e.preventDefault();
+    //     router.post("/houses/penghuni", penghuni);
+    // }
+
+    const handleTambahPenghuni = async () => {
+        try {
+            // console.log(penghuni.rumah_id);
+            await axios.post("/api/houses/penghuni", penghuni);
+        } catch (error) {
+            console.error("Gagal menambah penghuni rumah:", error);
         }
     };
 
@@ -361,9 +384,15 @@ export default function Rumah({ title }) {
                                                         ref={modalRef}
                                                         className="relative w-full max-w-md max-h-full bg-white rounded-lg shadow dark:bg-gray-700"
                                                     >
-                                                        <div className="flex items-center justify-between border-b border-gray-600 rounded-t p-4 mb-4">
+                                                        <div className="flex items-center justify-between border-b border-gray-600 rounded-t p-4">
                                                             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                                                                 Tambah Penghuni
+                                                                Rumah{" "}
+                                                                <span className="px-2 py-1 rounded-md bg-gray-800">
+                                                                    {
+                                                                        house.no_rumah
+                                                                    }
+                                                                </span>
                                                             </h3>
                                                             <button
                                                                 onClick={
@@ -391,121 +420,163 @@ export default function Rumah({ title }) {
                                                             </button>
                                                         </div>
                                                         <form
-                                                            onSubmit={
-                                                                handleTambah
-                                                            }
+                                                            onSubmit={() => {
+                                                                setPenghuni(
+                                                                    "rumah_id",
+                                                                    house.id
+                                                                );
+                                                                handleTambahPenghuni();
+                                                            }}
                                                             className="p-4 md:p-5"
                                                         >
-                                                            <div className="grid gap-4 mb-4 grid-cols-2">
-                                                                <div className="col-span-2">
-                                                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                                        No.
-                                                                        Rumah
+                                                            <div className="mb-6">
+                                                                <label
+                                                                    for="first_name"
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                >
+                                                                    Nama Lengkap
+                                                                </label>
+                                                                <input
+                                                                    value={
+                                                                        penghuni.nama_lengkap
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setPenghuni(
+                                                                            "nama_lengkap",
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    type="text"
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div className="mb-6">
+                                                                <label
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                    for="file_input"
+                                                                >
+                                                                    Upload Foto
+                                                                    KTP
+                                                                </label>
+                                                                <input
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setPenghuni(
+                                                                            "foto_ktp",
+                                                                            e
+                                                                                .target
+                                                                                .files[0]
+                                                                        )
+                                                                    }
+                                                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                                                    type="file"
+                                                                />
+                                                            </div>
+                                                            <div className="mb-6">
+                                                                <label
+                                                                    for="first_name"
+                                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                                                >
+                                                                    No. Telepon
+                                                                </label>
+                                                                <input
+                                                                    value={
+                                                                        penghuni.no_telp
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setPenghuni(
+                                                                            "no_telp",
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
+                                                                    type="text"
+                                                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-primary-500"
+                                                                    required
+                                                                />
+                                                            </div>
+                                                            <div class="grid gap-6 mb-6 md:grid-cols-2">
+                                                                <div>
+                                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                        Status
+                                                                        Penghuni
                                                                     </label>
-                                                                    <input
-                                                                        value={
-                                                                            data.no_rumah
-                                                                        }
+                                                                    <select
                                                                         onChange={(
                                                                             e
                                                                         ) =>
-                                                                            setData(
-                                                                                "no_rumah",
+                                                                            setPenghuni(
+                                                                                "status_penghuni",
                                                                                 e
                                                                                     .target
                                                                                     .value
                                                                             )
                                                                         }
-                                                                        type="text"
-                                                                        id="name"
-                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                                                        required
-                                                                    />
+                                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    >
+                                                                        <option>
+                                                                            Pilih
+                                                                            status
+                                                                            penghuni
+                                                                        </option>
+                                                                        <option value="tetap">
+                                                                            Penghuni
+                                                                            Tetap
+                                                                        </option>
+                                                                        <option value="kontrak">
+                                                                            Penghuni
+                                                                            Kontrak
+                                                                        </option>
+                                                                    </select>
                                                                 </div>
-                                                                <div className="col-span-2">
-                                                                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                                                        Tipe
-                                                                        Rumah
+                                                                <div>
+                                                                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                        Status
+                                                                        Pernikahan
                                                                     </label>
-
-                                                                    <div className="flex justify-between items-center mx-10">
-                                                                        <div className="flex items-center border border-gray-200 rounded dark:border-gray-700">
-                                                                            <input
-                                                                                id="bordered-radio-1"
-                                                                                type="radio"
-                                                                                value="dihuni"
-                                                                                checked={
-                                                                                    data.status_huni ===
-                                                                                    "dihuni"
-                                                                                }
-                                                                                onChange={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    setData(
-                                                                                        "status_huni",
-                                                                                        e
-                                                                                            .target
-                                                                                            .value
-                                                                                    )
-                                                                                }
-                                                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="bordered-radio-1"
-                                                                                className="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                                            >
-                                                                                Dihuni
-                                                                            </label>
-                                                                        </div>
-                                                                        <div className="flex items-center border border-gray-200 rounded dark:border-gray-700">
-                                                                            <input
-                                                                                id="bordered-radio-2"
-                                                                                type="radio"
-                                                                                value="tidak dihuni"
-                                                                                checked={
-                                                                                    data.status_huni ===
-                                                                                    "tidak dihuni"
-                                                                                }
-                                                                                onChange={(
-                                                                                    e
-                                                                                ) =>
-                                                                                    setData(
-                                                                                        "status_huni",
-                                                                                        e
-                                                                                            .target
-                                                                                            .value
-                                                                                    )
-                                                                                }
-                                                                                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                                            />
-                                                                            <label
-                                                                                htmlFor="bordered-radio-2"
-                                                                                className="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                                            >
-                                                                                Tidak
-                                                                                Dihuni
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
+                                                                    <select
+                                                                        onChange={(
+                                                                            e
+                                                                        ) =>
+                                                                            setPenghuni(
+                                                                                "status_pernikahan",
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        }
+                                                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    >
+                                                                        <option>
+                                                                            Pilih
+                                                                            status
+                                                                            pernikahan
+                                                                        </option>
+                                                                        <option value="sudah menikah">
+                                                                            Sudah
+                                                                            Menikah
+                                                                        </option>
+                                                                        <option value="belum menikah">
+                                                                            Belum
+                                                                            Menikah
+                                                                        </option>
+                                                                    </select>
                                                                 </div>
                                                             </div>
                                                             <button
                                                                 type="submit"
-                                                                className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                                                             >
-                                                                <svg
-                                                                    className="me-1 -ms-1 w-5 h-5"
-                                                                    fill="currentColor"
-                                                                    viewBox="0 0 20 20"
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                >
-                                                                    <path
-                                                                        fillRule="evenodd"
-                                                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                                                        clipRule="evenodd"
-                                                                    ></path>
-                                                                </svg>
-                                                                Tambah Penghuni
+                                                                Tambah
                                                             </button>
                                                         </form>
                                                     </div>

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Houses extends Model
 {
@@ -20,4 +20,9 @@ class Houses extends Model
         'no_rumah',
         'status_huni',
     ];
+
+    public function penghuni(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }

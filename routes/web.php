@@ -17,4 +17,5 @@ Route::controller(RumahController::class)->group(function () {
     Route::get('/rumah', 'index');
     // Route::get('/penghuni/tambah', 'tambah');
     Route::delete('/houses/{houseId}', 'destroy');
+    // Route::post('/houses/penghuni', 'tambahPenghuni');
 });

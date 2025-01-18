@@ -15,6 +15,7 @@ Route::get('/user', function (Request $request) {
 Route::controller(RumahController::class)->group(function () {
     Route::get('/houses', 'apiHouses');
     Route::post('/houses', 'store');
+    Route::post('/houses/penghuni', 'tambahPenghuni');
     // Route::get('/penghuni/tambah', 'tambah');
     Route::delete('/houses/hapus/{houseId}', 'delete');
 });
