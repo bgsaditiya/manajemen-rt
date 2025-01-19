@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('penghuni_id')->constrained('penghuni')->onDelete('cascade');
             $table->foreignId('rumah_id')->constrained('houses')->onDelete('cascade');
             $table->enum('jenis_iuran', ['kebersihan', 'satpam']);
-            $table->decimal('jumlah', 10, 2);
+            $table->integer('jumlah');
             $table->date('periode_start');
             $table->date('periode_end');
             $table->date('tanggal_pembayaran')->default(DB::raw('CURRENT_DATE'));

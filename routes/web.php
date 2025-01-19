@@ -38,9 +38,11 @@ Route::controller(PembayaranController::class)->group(function () {
 
 Route::controller(PengeluaranController::class)->group(function () {
     Route::get('/pengeluaran', 'index')->name('pengeluaran.index');
-    Route::get('/pengeluaran/tambah', 'create');
+    Route::get('/pengeluaran/add', 'create');
     Route::post('/pengeluaran/tambah', 'store');
 });
+
+// Route::inertia('/pengeluaran/tambah', 'Dashboard');
 
 Route::controller(LaporanController::class)->group(function () {
     Route::get('/laporan', 'index')->name('pengeluaran.index');

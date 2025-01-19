@@ -29,8 +29,9 @@ class PengeluaranController extends Controller
     public function create()
     {
         //
+        // dd("halo");
         return Inertia::render('Pengeluaran/Tambah', [
-            'title' => 'Tambah Data Pembayaran',
+            'title' => 'Tambah Data Pengeluaran',
         ]);
     }
 
